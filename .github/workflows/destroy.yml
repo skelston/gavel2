@@ -1,0 +1,51 @@
+name: Destroy app on Airbase
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [closed]
+
+jobs:
+  Airbase-Destroy-Prod:
+    if: github.event_name == 'workflow_dispatch' && github.ref_name == 'main'
+    runs-on: ubuntu-24.04
+    environment: prod
+    container:
+      image: gdssingapore/airbase:cli
+    steps:
+      - name: Airbase Destroy
+        shell: bash
+        run: |
+          echo "${{ secrets.AIRBASE_RC }}" > ~/.airbaserc
+          airbase container destroy --yes --project "${{ secrets.AIRBASE_PROJECT_HANDLE }}" prod
+
+  Airbase-Destroy-UAT:
+    if: github.event_name == 'workflow_dispatch' && github.ref_name == 'uat'
+    runs-on: ubuntu-24.04
+    environment: uat
+    container:
+      image: gdssingapore/airbase:cli
+    steps:
+      - name: Airbase Destroy
+        shell: bash
+        run: |
+          echo "${{ secrets.AIRBASE_RC }}" > ~/.airbaserc
+          airbase container destroy --yes --project "${{ secrets.AIRBASE_PROJECT_HANDLE }}" uat
+
+  stop_review:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-24.04
+    environment: 
+      name: review/${{ github.head_ref || github.ref_name }}
+    container:
+      image: gdssingapore/airbase:cli
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Airbase Destroy
+        shell: bash
+        run: |
+          echo "${{ secrets.AIRBASE_RC }}" > ~/.airbaserc
+          airbase container destroy --yes --project "${{ secrets.AIRBASE_PROJECT_HANDLE }}" review-${{ github.head_ref || github.ref_name | replace('/', '-') }}
+          echo "Review environment destroyed successfully" >> $GITHUB_STEP_SUMMARY
