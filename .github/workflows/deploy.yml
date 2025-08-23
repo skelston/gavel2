@@ -1,0 +1,106 @@
+name: Deploy app on Airbase
+
+on:
+  push:
+    branches: [main, uat]
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+jobs:
+  review:
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    runs-on: ubuntu-24.04
+    environment: 
+      name: review/${{ github.head_ref || github.ref_name }}
+    container:
+      image: gdssingapore/airbase:cli
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Airbase Build
+        run: airbase container build
+
+      - name: Prepare Environment Files
+        shell: bash
+        run: |
+          echo "${{ secrets.AIRBASE_ENV_LOCAL_FILE }}" > .env
+
+      - name: Airbase Deploy
+        shell: bash
+        run: |
+          echo "${{ secrets.AIRBASE_RC }}" > ~/.airbaserc
+          airbase container deploy --output deploy.env --yes --project "${{ secrets.AIRBASE_PROJECT_HANDLE }}" review-${{ github.head_ref || github.ref_name | replace('/', '-') }}
+          source deploy.env
+          echo "DYNAMIC_ENVIRONMENT_URL=$DYNAMIC_ENVIRONMENT_URL" >> $GITHUB_ENV
+          echo "Review app deployed successfully! Visit [$DYNAMIC_ENVIRONMENT_URL]($DYNAMIC_ENVIRONMENT_URL)" >> $GITHUB_STEP_SUMMARY
+
+  stop_review:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-24.04
+    environment: 
+      name: review/${{ github.head_ref || github.ref_name }}
+    container:
+      image: gdssingapore/airbase:cli
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Airbase Destroy
+        shell: bash
+        run: |
+          echo "${{ secrets.AIRBASE_RC }}" > ~/.airbaserc
+          airbase container destroy --yes --project "${{ secrets.AIRBASE_PROJECT_HANDLE }}" review-${{ github.head_ref || github.ref_name | replace('/', '-') }}
+          echo "Review environment destroyed successfully" >> $GITHUB_STEP_SUMMARY
+
+  production:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    environment: production
+    container:
+      image: gdssingapore/airbase:cli
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Airbase Build
+        run: airbase container build
+
+      - name: Prepare Environment Files
+        shell: bash
+        run: |
+          echo "${{ secrets.AIRBASE_ENV_LOCAL_FILE }}" > .env
+
+      - name: Airbase Deploy
+        shell: bash
+        run: |
+          echo "${{ secrets.AIRBASE_RC }}" > ~/.airbaserc
+          airbase container deploy --output deploy.env --yes --project "${{ secrets.AIRBASE_PROJECT_HANDLE }}"
+          source deploy.env
+          echo "Production app deployed successfully! Visit [$DYNAMIC_ENVIRONMENT_URL]($DYNAMIC_ENVIRONMENT_URL)" >> $GITHUB_STEP_SUMMARY
+
+  uat:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/uat'
+    runs-on: ubuntu-24.04
+    environment: uat
+    container:
+      image: gdssingapore/airbase:cli
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Airbase Build
+        run: airbase container build
+
+      - name: Prepare Environment Files
+        shell: bash
+        run: |
+          echo "${{ secrets.AIRBASE_ENV_LOCAL_FILE }}" > .env
+
+      - name: Airbase Deploy
+        shell: bash
+        run: |
+          echo "${{ secrets.AIRBASE_RC }}" > ~/.airbaserc
+          airbase container deploy --output deploy.env --yes --project "${{ secrets.AIRBASE_PROJECT_HANDLE }}" uat
+          source deploy.env
+          echo "UAT app deployed successfully! Visit [$DYNAMIC_ENVIRONMENT_URL]($DYNAMIC_ENVIRONMENT_URL)" >> $GITHUB_STEP_SUMMARY
