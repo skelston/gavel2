@@ -2,7 +2,7 @@ from gavel import celery
 import gavel.settings as settings
 import gavel.crowd_bt as crowd_bt
 import gavel.constants as constants
-from flask import Markup, Response, request, render_template
+from flask import Response, request, render_template
 import markdown
 import requests
 from functools import wraps
@@ -17,6 +17,7 @@ import email.mime.multipart
 import email.mime.text
 import json
 import types
+from markupsafe import Markup
 
 import asyncio
 
