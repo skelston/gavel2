@@ -6,4 +6,4 @@ this is a fork of Weareasterisk's Gavel2, to be used for judging at the [HackitR
 
 [Gavel Documentation](https://gavel.weareasterisk.com/)
 
-[![Deploy](https://www.heroku.com/wp-content/uploads/2025/03/button.png)](https://heroku.com/deploy)
+[![Deploy](https://www.heroku.com/wp-content/uploads/2025/03/button.png)](https://heroku.com/deploy?template=https://github.com/skelston/gavel2)
