@@ -1,6 +1,6 @@
 **Gavel** is a project expo judging system.
 
-this is a fork of Weareasterisk's Gavel2, to be used for judging at the [HackitRX Singapore 2025] (https://hackitrx.devpost.com).
+this is a fork of Weareasterisk's Gavel2, to be used for judging at the [HackitRX Singapore 2025](https://hackitrx.devpost.com).
 
 [Click here to create a Heroku instance](https://dashboard.heroku.com/new?template=https%3A%2F%2Fgithub.com%2Fweareasterisk%2Fgavel2%2Ftree%2Fmaster)
 
