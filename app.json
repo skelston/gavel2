@@ -85,9 +85,7 @@
             "value": "true"
         }
     },
-    "website": "https://gavel.weareasterisk.com/",
-    "repository": "https://github.com/weareasterisk/gavel",
-    "logo": "https://cdn.weareasterisk.com/product-assets/gavel/icon.png",
+    "repository": "https://github.com/skelston/gavel2",
     "success_url": "/admin",
     "keywords": [
         "gavel",
