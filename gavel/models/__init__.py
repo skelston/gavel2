@@ -1,6 +1,5 @@
 import gavel.crowd_bt as crowd_bt
 from flask_sqlalchemy import SQLAlchemy
-from flask_marshmallow import Marshmallow
 import sqlalchemy.exc
 import psycopg2.errors
 
@@ -13,7 +12,6 @@ class SerializableAlchemy(SQLAlchemy):
 
 
 db = SerializableAlchemy()
-ma = Marshmallow()
 
 from gavel.models.annotator import Annotator, ignore_table
 from gavel.models.item import Item, view_table

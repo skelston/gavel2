@@ -3,6 +3,9 @@
 # This software is released under AGPLv3. See the included LICENSE.txt for
 # details.
 
+import eventlet
+eventlet.monkey_patch(os=True, select=True, socket=True, thread=True, time=True, psycopg=True)
+
 import os
 
 from flask import Flask
@@ -10,9 +13,6 @@ from flask_compress import Compress
 from flask_minify import minify
 from flask_socketio import SocketIO
 from flask_json import FlaskJSON
-import eventlet
-
-eventlet.monkey_patch(os=True, select=True, socket=True, thread=True, time=True, psycopg=True)
 
 BASE_DIR = os.path.dirname(__file__)
 
@@ -93,15 +93,12 @@ app.config['CELERY_BROKER_URL'] = settings.BROKER_URI
 celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
 celery.conf.update(app.config)
 
-from gavel.models import db, ma
-
+from gavel.models import db
 from gavel.models import *
 from gavel.schemas import *
 
 db.app = app
 db.init_app(app)
-ma.app = app
-ma.init_app(app)
 
 SOCKETIO_REDIS_URL = settings.BROKER_URI
 async_mode="eventlet"
@@ -121,3 +118,7 @@ gavel.utils.send_telemetry('gavel-boot', {
   'timeout': settings.TIMEOUT,
   'disable-email': settings.DISABLE_EMAIL
 })
+
+# In gavel/__init__.py, after setting the database URI
+app.config['SQLALCHEMY_DATABASE_URI'] = settings.DB_URI
+print("Database URI:", app.config['SQLALCHEMY_DATABASE_URI'])

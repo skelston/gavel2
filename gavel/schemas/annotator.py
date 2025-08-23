@@ -1,8 +1,8 @@
-from gavel.models import ma
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from gavel.models import Annotator, db
 
-from gavel.models import Annotator
-
-
-class AnnotatorSchema(ma.ModelSchema):
+class AnnotatorSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Annotator
+        sqla_session = db.session
+        load_instance = True

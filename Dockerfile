@@ -1,20 +1,25 @@
-FROM python:3.8-slim
+FROM python:3.12.11-slim-trixie
 
-RUN apt update
+# Install build-essential for C-extensions and clean up to reduce image size
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir /web
-
-WORKDIR /root
-
-COPY requirements.txt /web/requirements.txt
-RUN python -m pip install -r /web/requirements.txt --no-cache-dir
-
+# Create and set working directory
 WORKDIR /web
 
-COPY . /web
+# Copy and install requirements first to leverage Docker cache
+COPY requirements.txt .
+RUN python -m pip install -r requirements.txt --no-cache-dir
 
-ENV PORT 5000
+# Copy the rest of the application
+COPY . .
 
+# Set environment variable for port
+ENV PORT=5000
 EXPOSE ${PORT}
 
-CMD ["python","initialize.py","&&","gunicorn", "-b","0.0.0.0:$PORT","gavel:app","-w","3"]
+# Copy and make entrypoint executable
+COPY entrypoint.sh /web/entrypoint.sh
+RUN chmod +x /web/entrypoint.sh
+
+# Run entrypoint
+CMD ["/web/entrypoint.sh"]
