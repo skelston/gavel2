@@ -4,5 +4,7 @@
 # details.
 
 if __name__ == '__main__':
+    from gavel import app
     from gavel.models import db
-    db.create_all()
+    with app.app_context():
+        db.create_all()

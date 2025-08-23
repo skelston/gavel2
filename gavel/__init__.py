@@ -3,6 +3,9 @@
 # This software is released under AGPLv3. See the included LICENSE.txt for
 # details.
 
+import eventlet
+eventlet.monkey_patch(os=True, select=True, socket=True, thread=True, time=True, psycopg=True)
+
 import os
 
 from flask import Flask
@@ -10,9 +13,6 @@ from flask_compress import Compress
 from flask_minify import minify
 from flask_socketio import SocketIO
 from flask_json import FlaskJSON
-import eventlet
-
-eventlet.monkey_patch(os=True, select=True, socket=True, thread=True, time=True, psycopg=True)
 
 BASE_DIR = os.path.dirname(__file__)
 
@@ -118,3 +118,7 @@ gavel.utils.send_telemetry('gavel-boot', {
   'timeout': settings.TIMEOUT,
   'disable-email': settings.DISABLE_EMAIL
 })
+
+# In gavel/__init__.py, after setting the database URI
+app.config['SQLALCHEMY_DATABASE_URI'] = settings.DB_URI
+print("Database URI:", app.config['SQLALCHEMY_DATABASE_URI'])

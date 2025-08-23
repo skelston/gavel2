@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   variables:
-    DATABASE_URL: "postgres://gaveluser:GavelSandbox@gavel-sandbox.cny8nr0rv9ic.us-east-1.rds.amazonaws.com/gavel"
+    DATABASE_URL: "postgresql://gaveluser:GavelSandbox@gavel-sandbox.cny8nr0rv9ic.us-east-1.rds.amazonaws.com/gavel"
 
 phases:
   install:

@@ -20,7 +20,7 @@ services:
 
 #  gavel:
 #    environment:
-#        - DATABASE_URL=postgres://gavel:gavel@postgres/gavel
+#        - DATABASE_URL=postgresql://gavel:gavel@postgres/gavel
 #        - ADMIN_PASSWORD=admin
 #        - REDIS_URL=redis://redis/0
 #        - BASE_URL=localhost
