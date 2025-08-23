@@ -1,6 +1,7 @@
-FROM python:3.8-slim
+FROM python:3.12.11-slim-trixie
 
-RUN apt update
+# Installs packages needed to build C-extensions
+RUN apt-get update && apt-get install -y build-essential
 
 RUN mkdir /web
 
@@ -17,4 +18,8 @@ ENV PORT 5000
 
 EXPOSE ${PORT}
 
-CMD ["python","initialize.py","&&","gunicorn", "-b","0.0.0.0:$PORT","gavel:app","-w","3"]
+COPY start.sh /web/start.sh
+
+RUN chmod +x /web/start.sh
+
+CMD ["/web/start.sh"]
