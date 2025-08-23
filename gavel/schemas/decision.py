@@ -1,8 +1,8 @@
-from marshmallow_sqlalchemy import ModelSchema
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from gavel.models import Decision, db
 
-from gavel.models import Decision
-
-
-class DecisionSchema(ModelSchema):
+class DecisionSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Decision
+        sqla_session = db.session
+        load_instance = True

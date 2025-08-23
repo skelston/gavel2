@@ -4,7 +4,6 @@ from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm import validates
 from datetime import datetime
 import gavel.settings as settings
-
 from gavel.models._basemodel import BaseModel
 
 view_table = db.Table('view',

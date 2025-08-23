@@ -3,13 +3,12 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm.attributes import QueryableAttribute
 from gavel import app
 
-from gavel.models import db, ma
+from gavel.models import db
 
 
 class BaseModel(db.Model):
     __abstract__ = True
 
-# Begin to_dict
     def to_dict(self, show=None, _hide=[], _path=None):
         """Return a dictionary representation of this model."""
 
@@ -117,4 +116,3 @@ class BaseModel(db.Model):
                         pass
 
         return ret_data
-# End to_dict

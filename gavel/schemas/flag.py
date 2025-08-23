@@ -1,8 +1,8 @@
-from gavel.models import ma
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from gavel.models import Flag, db
 
-from gavel.models import Flag
-
-
-class FlagSchema(ma.ModelSchema):
+class FlagSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Flag
+        sqla_session = db.session
+        load_instance = True

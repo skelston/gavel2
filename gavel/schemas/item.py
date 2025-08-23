@@ -1,9 +1,8 @@
-from gavel.models import ma
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from gavel.models import Item, db
 
-from gavel.models import Item
-
-
-class ItemSchema(ma.ModelSchema):
+class ItemSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Item
-
+        sqla_session = db.session
+        load_instance = True
