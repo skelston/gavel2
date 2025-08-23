@@ -1,4 +1,4 @@
-from gavel.models import db, ma
+from gavel.models import db
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 import gavel.utils as utils
 import gavel.crowd_bt as crowd_bt

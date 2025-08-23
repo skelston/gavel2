@@ -93,15 +93,12 @@ app.config['CELERY_BROKER_URL'] = settings.BROKER_URI
 celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
 celery.conf.update(app.config)
 
-from gavel.models import db, ma
-
+from gavel.models import db
 from gavel.models import *
 from gavel.schemas import *
 
 db.app = app
 db.init_app(app)
-ma.app = app
-ma.init_app(app)
 
 SOCKETIO_REDIS_URL = settings.BROKER_URI
 async_mode="eventlet"
