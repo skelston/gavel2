@@ -1,16 +1,7 @@
 {
-    "stack": "heroku-20",
     "addons": [
         "heroku-postgresql:essential-0",
         "heroku-redis:mini"
-    ],
-    "buildpacks": [
-        {
-            "url": "https://github.com/heroku/heroku-buildpack-nodejs#v170"
-        },
-        {
-            "url": "heroku/python"
-        }
     ],
     "formation": {
         "web": {
