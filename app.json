@@ -1,87 +1,57 @@
 {
-    "addons": [
-        "heroku-postgresql:essential-0",
-        "heroku-redis:mini"
-    ],
-    "formation": {
-        "web": {
-            "quantity": 1,
-            "size": "eco"
-        },
-        "worker": {
-            "quantity": 1,
-            "size": "eco"
-        }
-    },
+    "name": "Gavel Judging System",
     "description": "An awesome judging system for hackathons",
-    "env": {
-        "ADMIN_PASSWORD": {
-            "description": "Password for the administrator account.",
-            "value": "change-this-before-deploying"
-        },
-        "SECRET_KEY": {
-            "description": "Secret key used to hash requests and keys.",
-            "generator": "secret"
-        },
-        "VIRTUAL_EVENT": {
-            "description": "Enables virtual event features if set to true.",
-            "value": "false"
-        },
-        "DISABLE_EMAIL": {
-            "description": "Email sending is disabled if set to true.",
-            "value": "false"
-        },
-        "BASE_URL": {
-            "description": "The base URL of the app.",
-            "value": "https://<app-name>.herokuapp.com"
-        },
-        "EMAIL_FROM": {
-            "description": "Who the emails are sent from. Use the format: Sender Name <sender@email.com>",
-            "value": "_unused_"
-        },
-        "EMAIL_PROVIDER": {
-            "description": "What service emails are sent from. You have a choice between smtp, mailgun, and sendgrid. All services require EMAIL_FROM. SMTP requires EMAIL_USER and EMAIL_PASSWORD, alongside EMAIL_HOST and EMAIL_PORT. Mailgun requires MAILGUN_DOMAIN, and MAILGUN_API_KEY. Sendgrid requires SENDGRID_API_KEY. *Make sure that the field below is either smtp, mailgun, or sendgrid.*",
-            "value": "smtp"
-        },
-        "EMAIL_USER": {
-            "description": "Must be populated with an SMTP username if EMAIL_PROVIDER is set to smtp.",
-            "value": "_unused_"
-        },
-        "EMAIL_PASSWORD": {
-            "description": "Must be populated with an SMTP password if EMAIL_PROVIDER is set to smtp.",
-            "value": "_unused_"
-        },
-        "EMAIL_HOST": {
-            "description": "Must be populated with an SMTP host if EMAIL_PROVIDER is set to smtp. Defaults to gmail",
-            "value": "smtp.gmail.com"
-        },
-        "EMAIL_PORT": {
-            "description": "Must be populated with an SMTP port if EMAIL_PROVIDER is set to smtp.",
-            "value": "587"
-        },
-        "SENDGRID_API_KEY": {
-            "description": "Must be populated with a Sendgrid API key if EMAIL_PROVIDER is set to sendgrid.",
-            "value": "_unused_"
-        },
-        "MAILGUN_DOMAIN": {
-            "description": "Must be populated with a Mailgun domain if EMAIL_PROVIDER is set to mailgun.",
-            "value": "_unused_"
-        },
-        "MAILGUN_API_KEY": {
-            "description": "Must be populated with a Mailgun API key if EMAIL_PROVIDER is set to mailgun",
-            "value": "_unused_"
-        },
-        "IGNORE_CONFIG_FILE": {
-            "description": "MUST be set to true in order for these environment variables to work.",
-            "value": "true"
-        }
-    },
     "repository": "https://github.com/skelston/gavel2",
     "success_url": "/admin",
-    "keywords": [
-        "gavel",
-        "python",
-        "flask"
+    "keywords": ["gavel", "python", "flask"],
+    "addons": [
+      "heroku-postgresql:essential-0",
+      "heroku-redis:mini"
     ],
-    "name": "Gavel Judging System"
-}
+    "formation": {
+      "web": { "quantity": 1, "size": "eco" },
+      "worker": { "quantity": 1, "size": "eco" }
+    },
+    "env": {
+      "ADMIN_PASSWORD": {
+        "description": "Password for the administrator account.",
+        "required": true
+      },
+      "SECRET_KEY": {
+        "description": "Secret key used to hash requests and keys.",
+        "generator": "secret"
+      },
+      "BASE_URL": {
+        "description": "The base URL of the app.",
+        "value": "https://<app-name>.herokuapp.com"
+      },
+      "VIRTUAL_EVENT": {
+        "description": "Enable virtual event features if set to true.",
+        "value": "false"
+      },
+      "DISABLE_EMAIL": {
+        "description": "Email sending is disabled if set to true.",
+        "value": "false"
+      },
+      "EMAIL_FROM": {
+        "description": "Who the emails are sent from. Format: Sender Name <sender@email.com>",
+        "value": "_unused_"
+      },
+      "EMAIL_PROVIDER": {
+        "description": "Email service (smtp, mailgun, sendgrid).",
+        "value": "smtp"
+      },
+      "EMAIL_USER": { "value": "_unused_" },
+      "EMAIL_PASSWORD": { "value": "_unused_" },
+      "EMAIL_HOST": { "value": "smtp.gmail.com" },
+      "EMAIL_PORT": { "value": "587" },
+      "SENDGRID_API_KEY": { "value": "_unused_" },
+      "MAILGUN_DOMAIN": { "value": "_unused_" },
+      "MAILGUN_API_KEY": { "value": "_unused_" },
+      "IGNORE_CONFIG_FILE": {
+        "description": "MUST be set to true in order for these environment variables to work.",
+        "value": "true"
+      }
+    }
+  }
+  
