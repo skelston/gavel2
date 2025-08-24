@@ -13,6 +13,8 @@ venv/
 .env*
 !.env.example
 
+config.yaml
+
 .vscode/
 
 celerybeat-schedule
