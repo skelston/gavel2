@@ -27,7 +27,11 @@ services:
       - IGNORE_CONFIG_FILE=true
       - SECRET_KEY=your-secret-key-here-change-in-production
       - FLASK_DEBUG=1
-      - PORT=5000
+      - PORT=5001
+      - POSTGRES_DB=postgres  
+      - POSTGRES_USER=postgres 
+      - POSTGRES_PASSWORD=postgres 
+      
       # Add other environment variables as needed (from your old commented section):
       # - ADMIN_PASSWORD=admin
       # - BASE_URL=localhost
@@ -35,7 +39,7 @@ services:
       # - EMAIL_USER=
       # - EMAIL_PASSWORD=
     ports:
-      - "5000:5000"
+      - "5001:5001"
     depends_on:
       - postgres
       - redis
@@ -45,7 +49,7 @@ services:
     # The entrypoint script (docker-entrypoint.sh) will handle DB init and then run gunicorn
     # Remove the 'command' override to use the ENTRYPOINT/CMD from the Dockerfile,
     # or define it here if you prefer.
-    # command: ./docker-entrypoint.sh
+    command: ./docker-entrypoint-dev.sh
 
   worker:
     build: .
