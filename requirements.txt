@@ -35,7 +35,6 @@ monotonic==1.6
 numpy>=1.21
 ply==3.11
 psycopg2-binary==2.9.10
-psycopg2==2.9.10
 pyparsing==3.2.3
 pyscss==1.4.0
 python-dotenv==1.1.1
