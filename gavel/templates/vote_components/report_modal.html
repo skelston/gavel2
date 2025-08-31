@@ -30,42 +30,76 @@
     }
 
   </script>
-  <div class="modal md:justify-center md:items-center z-0 pointer" id="reportModal">
-    <div class="fixed bottom-0 bg-white md:flex md:bottom-auto md:w-44 z-500 flex-wrap md:rounded-8 cursor-default" id="reportModalContent">
-      <div class="bg-cross hidden md:block md:absolute top-2.4 right-2.4 cursor-pointer h-1.2 w-1.2" onclick="toggleReport(false)"></div>
+  <div class="fixed inset-0 flex justify-center items-end bg-black bg-opacity-50 z-50 pointer" id="doneModal">
+
+    <!-- Modal container -->
+    <div class="absolute bottom-0 w-full md:w-44 bg-white md:rounded-8 flex flex-col cursor-default">
+
+      <!-- Close button for desktop -->
+      <div class="bg-cross hidden md:block md:absolute top-2.4 right-2.4 cursor-pointer h-1.2 w-1.2" onclick="toggleModal(false)"></div>
+
+      <!-- Modal body -->
       <div class="md:m-2.4 m-1.6">
-        <h2 class="pb-1.6 text-18 md:pr-2.4">The <span class="text-indigo font-medium">current project</span> needs to be reviewed for the following reasons:</h2>
-        <form id="checkboxForm">
+
+        <h2 class="pb-1.6 text-18 md:pr-2.4 text-indigo">Select the better project to continue</h2>
+
+        <div class="flex flex-col">
+
+          <!-- Current project -->
           <label class="inline-flex items-center mb-1.6 pointer">
-            <input type="checkbox" class="form-checkbox border-red border-2 text-red h-3.2 w-3.2 md:h-2.4 md:w-2.4 pointer" id="reportCheckOne" value="NoDemo" name="checkbox[]" onclick="setChecks()">
-            <span class="ml-2 text-14">{{"There’s no demo for the" if virtual else "The team cannot demo their" }} project or provides no evidence of the work described.</span>
+            <input form="doneForm" type="radio" class="form-radio border-lightblue border-2 text-lightblue h-3.2 w-3.2 md:h-2.4 md:w-2.4 pointer" id="doneRadioOne" value="Current" name="action" onclick="setProjects()">
+            <div class="flex-col ml-2">
+              <p class="uppercase text-indigo text-12 font-medium">current project</p>
+              <p class="text-18">{{ next.name }}</p>
+            </div>
           </label>
+
+          <!-- Previous project -->
           <label class="inline-flex items-center mb-1.6 pointer">
-            <input type="checkbox" class="form-checkbox border-red border-2 text-red h-3.2 w-3.2 md:h-2.4 md:w-2.4 pointer" id="reportCheckTwo" value="TooComplex" name="checkbox[]" onclick="setChecks()">
-            <span class="ml-2 text-14">The project appears too complex to have been created within the prescribed timeframe of the hackathon.</span>
+            <input form="doneForm" type="radio" class="form-radio border-lightblue border-2 text-lightblue h-3.2 w-3.2 md:h-2.4 md:w-2.4 pointer" id="doneRadioTwo" value="Previous" name="action" onclick="setProjects()">
+            <div class="flex-col ml-2">
+              <p class="uppercase text-lightgray text-12 font-medium">last project you reviewed</p>
+              <p class="text-18">{{ prev.name }}</p>
+            </div>
           </label>
-          <label class="inline-flex items-center pointer">
-            <input type="checkbox" class="form-checkbox border-red border-2 text-red h-3.2 w-3.2 md:h-2.4 md:w-2.4 pointer" id="reportCheckThree" value="Offensive" name="checkbox[]" onclick="setChecks()">
-            <span class="ml-2 text-14">The project is or has offensive, harrassing, or inappropriate content and/or breaks the Code of Conduct.</span>
-          </label>
-        </form>
+
+        </div>
+
       </div>
 
-      <div class="w-full flex flex-no-wrap h-6.4 md:h-auto md:border-none border-t border-lightgray md:justify-end md:mx-2.4 md:mb-2.4">
+      <!-- Buttons -->
+      <div class="w-full flex flex-no-wrap border-t border-lightgray">
+
+        <!-- Close button mobile -->
         <div class="w-1/2 text-center flex justify-around border-r border-lightgray md:hidden">
-          <span class="h-full w-full flex items-center justify-around text-12 center uppercase text-indigo pointer" id="skipCloseButton" onclick="toggleReport()">CLOSE</span>
+          <span class="h-full w-full flex items-center justify-around text-12 center uppercase text-indigo pointer" onclick="toggleModal(false)">CLOSE</span>
         </div>
+
+        <!-- Next project button -->
         <div class="w-1/2 md:w-auto text-center flex justify-around md:justify-end md:text-white">
-          <form action="/report" method="post" class="h-full w-full flex items-center justify-around text-12 center uppercase text-indigo">
-            <button id="modalReportButton" class="w-full h-full md:h-4 md:bg-lightgray pointer md:rounded md:px-1.4" name="reason" type="button" value="Unknown">
-              <a class="uppercase text-lightgray text-bold md:text-white" id="modalReportText" style="margin: 0;">SUBMIT FOR REVIEW</a></button>
+          <form action="/vote" method="post" class="h-full w-full flex items-center justify-around text-12 center uppercase text-indigo" id="doneForm">
+            <button id="modalDoneButton" class="w-full h-full md:h-4 md:bg-lightgray pointer md:rounded md:px-1.4" type="submit">
+              <a class="uppercase text-lightgray text-bold md:text-white" id="modalDoneText" style="margin: 0;">NEXT PROJECT</a>
+            </button>
+            <input type="hidden" name="prev_id" value="{{ prev.id }}">
             <input type="hidden" name="next_id" value="{{ next.id }}">
             <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
           </form>
         </div>
+
       </div>
+
     </div>
   </div>
+
+  <script>
+    // Optional: close modal when clicking outside
+    const doneModal = document.getElementById('doneModal');
+    doneModal.addEventListener('click', (e) => {
+      if (e.target === doneModal) toggleModal(false);
+    });
+  </script>
+
   <script>
     
     document.getElementById("reportModal").onclick = (event) => {
