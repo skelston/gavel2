@@ -167,7 +167,8 @@ def admin_items():
       item_dumped = item_schema.dump(it)
       item_dumped.update({
         'votes': item_counts.get(it.id, 0),
-        'skipped': list(set(skipped.get(it.id, [])))
+        'skipped': list(set(skipped.get(it.id, []))),
+        'viewed': viewed.get(it.id, [])
       })
       items_dumped.append(item_dumped)
     except Exception as e:
