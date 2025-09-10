@@ -3,6 +3,9 @@
 # This software is released under AGPLv3. See the included LICENSE.txt for
 # details.
 
+import gevent.monkey
+gevent.monkey.patch_all()
+
 import os
 
 from flask import Flask
@@ -10,9 +13,7 @@ from flask_compress import Compress
 from flask_minify import minify
 from flask_socketio import SocketIO
 from flask_json import FlaskJSON
-import eventlet
 
-eventlet.monkey_patch(os=True, select=True, socket=True, thread=True, time=True, psycopg=True)
 
 BASE_DIR = os.path.dirname(__file__)
 
@@ -104,7 +105,7 @@ ma.app = app
 ma.init_app(app)
 
 SOCKETIO_REDIS_URL = settings.BROKER_URI
-async_mode="eventlet"
+async_mode="gevent"
 
 socketio = SocketIO(app, async_mode=async_mode, message_queue=SOCKETIO_REDIS_URL, async_handlers=True)
 
