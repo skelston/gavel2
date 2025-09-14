@@ -9,21 +9,21 @@
     "build:watch": "cross-env NODE_ENV=development postcss gavel/static/css/tailwind.scss -o gavel/static/generated.scss -w"
   },
   "devDependencies": {
-    "@fullhuman/postcss-purgecss": "^2.1.2",
+    "@fullhuman/postcss-purgecss": "^2.3.0",
     "@tailwindcss/custom-forms": "^0.2.1",
-    "autoprefixer": "^9.7.6",
-    "cross-env": "^7.0.2",
-    "cssnano": "^4.1.10",
-    "postcss": "^7.0.27",
-    "postcss-cli": "^7.1.0",
+    "autoprefixer": "^9.8.8",
+    "cross-env": "^7.0.3",
+    "cssnano": "^4.1.11",
+    "postcss": "^7.0.39",
+    "postcss-cli": "^7.1.2",
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
     "postcss-modules": "^1.5.0",
-    "postcss-nested": "^4.2.1",
+    "postcss-nested": "^4.2.3",
     "postcss-preset-env": "^6.7.0",
-    "postcss-scss": "^2.0.0",
+    "postcss-scss": "^2.1.1",
     "postcss-url": "^8.0.0",
-    "tailwindcss": "^1.2.0"
+    "tailwindcss": "^1.9.6"
   },
   "browserslist": {
     "production": [
