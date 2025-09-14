@@ -42,13 +42,6 @@ module.exports = {
     borderWidth: {
       default: '1px',
       '0': '0',
-      '2': '.2rem',
-      '4': '.4rem',
-      '8': '8px',
-    },
-    borderWidth: {
-      default: '1px',
-      '0': '0',
       '2': '2px',
       '4': '4px',
       '8': '8px',
@@ -209,23 +202,6 @@ module.exports = {
       '50': '50',
       '500': '500',
     },
-    customForms: theme => ({
-      default: {
-        select: {
-          icon: '<svg fill="#e2e8f0" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>',
-        },
-        checkbox: {
-          icon: '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none"><path d="M8 17.008l5 6 11-14" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-          '&:focus': undefined
-        },
-        radio: {
-          icon: '<svg fill="#fff" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="3"/></svg>',
-          '&:focus': {
-            boxShadow: undefined
-          }
-        },
-      },
-    }),
     inset: theme => ({
       ...theme('spacing'),
       auto: 'auto',
@@ -300,6 +276,8 @@ module.exports = {
     zIndex: ['responsive'],
   },
   plugins: [
-    require('@tailwindcss/custom-forms'),
+    require('@tailwindcss/forms')({
+      strategy: 'class',
+    }),
   ],
 }
