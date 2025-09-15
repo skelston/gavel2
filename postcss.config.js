@@ -3,16 +3,15 @@ const isProd = process.env.NODE_ENV === "production"
 
 module.exports = {
   modules: true,
-  syntax: 'postcss-scss',
   plugins: [
     require('postcss-import'),
+    require('@tailwindcss/nesting'),
     require('tailwindcss'),
     require('autoprefixer')(),
     require('postcss-url'),
-    require('postcss-nested'),
     require('postcss-preset-env')({
       features: {
-          'nesting-rules': true
+          'nesting-rules': false
       },
       browsers: [
           '> 1%',

@@ -1,6 +1,6 @@
 <div class="flex flex-col">
   <div class="w-full flex justify-between">
-    <div class="flex flex-grow flex-col">
+    <div class="flex grow flex-col">
       <!-- <p class="text-lg md:text-2xl uppercase">project name</p> -->
       <p class="text-18 md:text-24">{{ item.name | safe }}</p>
     </div>
@@ -26,7 +26,7 @@
     <a class="bg-indigo rounded text-white text-center py-.8 px-1.2 text-14 mr-.8 autourl" href="{{ item.submission_reference | safe }}" target="_blank" rel="noopener noreferrer">View Full Submission</a>
     <a class="bg-indigo rounded text-white text-center py-.8 px-1.2 text-14 autourl" href="{{ item.submission_website | safe }}" target="_blank" rel="noopener noreferrer">Project Site</a>
   </div>
-  <div class="w-full flex-grow md:max-w-56">
+  <div class="w-full grow md:max-w-56">
     <p class="uppercase text-12 md:text-16 text-indigo font-medium pb-.8">video submission</p>
     <div class="h-auto w-full block pb-1.6">
       {% with url=item.video_reference, id=(range(1, 50000) | random) %}

@@ -1,4 +1,4 @@
-@import './constants.scss';
+@import './constants.css';
 
 * {
   -webkit-box-sizing: border-box;
@@ -22,8 +22,8 @@ html {
 
 body {
   font-size: 1.6rem;
-  color: $text-color;
-  background-color: $light;
+  color: var(--text-color);
+  background-color: var(--light);
 }
 
 button {
@@ -31,10 +31,10 @@ button {
 }
 
 h1.page-title {
-  font-family: $heading-font;
+  font-family: var(--heading-font);
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-  color: $branding-purple;
+  color: var(--branding-purple);
   font-weight: normal !important;
   left: 24px;
   font-style: normal !important;
@@ -60,7 +60,7 @@ textarea {
 
 input,
 textarea {
-  font-family: $body-font;
+  font-family: var(--body-font);
 }
 
 input {
@@ -78,7 +78,7 @@ table {
 
 
 th {
-  background: $light-grey;
+  background: var(--light-grey);
   font-weight: bold;
   white-space: nowrap;
 }
@@ -131,7 +131,7 @@ a {
 }
 
 a.colored {
-  color: $branding-purple;
+  color: var(--branding-purple);
   font-family: Rubik;
   font-style: normal;
   font-weight: 500;
@@ -198,8 +198,8 @@ hr {
   text-align: center;
   text-transform: uppercase;
   margin-bottom: 0.5rem;
-  color: $light;
-  background-color: $dark;
+  color: var(--light);
+  background-color: var(--dark);
 }
 
 .banner-branded {
@@ -210,7 +210,7 @@ hr {
   font-size: 32px;
   text-align: left;
   margin-bottom: 24px;
-  color: $branding-purple;
+  color: var(--branding-purple);
 }
 
 .banner-tight {
@@ -219,47 +219,47 @@ hr {
 }
 
 #admin-header {
-  background-color: $admin-color;
+  background-color: var(--admin-color);
 }
 
 #wait-header {
-  background-color: $wait-color;
-  color: $dark;
+  background-color: var(--wait-color);
+  color: var(--dark);
 }
 
 #error-header {
-  background-color: $error-color;
+  background-color: var(--error-color);
 }
 
 #previous-header {
-  background-color: $previous-color;
+  background-color: var(--previous-color);
 }
 
 #previous-body {
-  background-color: mix($previous-color, white, 25%);
+  background-color: mix(var(--previous-color), white, 25%);
 }
 
 #current-header {
-  background-color: $current-color;
+  background-color: var(--current-color);
 }
 
 #current-body {
-  background-color: mix($current-color, white, 25%);
+  background-color: mix(var(--current-color), white, 25%);
 }
 
 #vote-header {
-  background-color: $vote-color;
+  background-color: var(--vote-color);
 }
 
 input[type=submit] {
-  color: $dark;
-  background-color: $dark;
-  border: 1px solid $dark;
+  color: var(--dark);
+  background-color: var(--dark);
+  border: 1px solid var(--dark);
   font-size: 1.2rem;
   text-transform: uppercase;
   text-align: center;
   height: 3rem;
-  -webkit-border-radius: 0; // fix rounded buttons on iOS
+  -webkit-border-radius: 0; /* fix rounded buttons on iOS */
   td & {
     border: none;
     width: 100%;
@@ -292,8 +292,8 @@ input[type=submit] {
 }
 
 .button-full {
-  background-color: $branding-blue;
-  color: $light;
+  background-color: var(--branding-blue);
+  color: var(--light);
   width: 100%;
   border-color: transparent !important;
   font-family: Rubik !important;
@@ -324,42 +324,42 @@ input[type=submit] {
 }
 
 #vote-previous {
-  background-color: $previous-color;
+  background-color: var(--previous-color);
 }
 
 #vote-current {
-  background-color: $current-color;
+  background-color: var(--current-color);
 }
 
 #vote-skip {
-  background-color: $vote-skip-color;
-  color: $dark;
+  background-color: var(--vote-skip-color);
+  color: var(--dark);
 }
 
 #vote-done {
-  background-color: $vote-done-color;
+  background-color: var(--vote-done-color);
 }
 
 input[type=submit].positive {
-  background-color: $positive-color;
+  background-color: var(--positive-color);
 }
 
 input[type=submit].negative {
-  background-color: $negative-color;
+  background-color: var(--negative-color);
 }
 
 input[type=submit].neutral {
   display: inline;
-  background-color: $neutral-color;
-  color: $dark;
+  background-color: var(--neutral-color);
+  color: var(--dark);
 }
 
 .prioritized {
-  background-color: $prioritized-color!important;
+  background-color: var(--prioritized-color)!important;
 }
 
 .disabled {
-  background-color: $disabled-color!important;
+  background-color: var(--disabled-color)!important;
 }
 
 .upload-container {
@@ -373,7 +373,7 @@ input[type=submit].neutral {
 
 #footer {
   margin-top: 2rem;
-  border-top: 1px solid $light-grey;
+  border-top: 1px solid var(--light-grey);
 
   p {
     font-size: 0.75rem;
@@ -405,7 +405,7 @@ dl.instructions dt:last-child {
 
 dl.instructions dt:before {
   left: 0;
-  border: 4px solid $branding-purple;
+  border: 4px solid var(--branding-purple);
   transform: matrix(0, 1, -1, 0, 0, 0);
   position: relative;
   top: 0;
@@ -428,8 +428,8 @@ dl.instructions dt p {
 }
 
 .continue-button {
-  color: $light;
-  background-color: $branding-grey;
+  color: var(--light);
+  background-color: var(--branding-grey);
   width: 100%;
   border-color: transparent !important;
   font-family: Rubik !important;
@@ -465,7 +465,7 @@ dl.instructions dt p {
   width: 32px;
   height: 32px;
   background: #FFFFFF;
-  border: 1px solid $branding-blue;
+  border: 1px solid var(--branding-blue);
   box-sizing: border-box;
   border-radius: 4px;
 }
@@ -527,7 +527,7 @@ dl.instructions dt p {
 }
 
 .fillBlue::before {
-  background-color: $branding-blue !important;
+  background-color: var(--branding-blue) !important;
 }
 
 .instructionsAsterisk {
@@ -538,7 +538,7 @@ dl.instructions dt p {
   line-height: normal;
   font-size: 12px;
   margin-bottom: 59px;
-  color: $branding-purple;
+  color: var(--branding-purple);
 }
 
 .voteItemTeam {
@@ -577,7 +577,7 @@ dl.instructions dt p {
 }
 
 .projectItem {
-  border: 1px solid $branding-grey;
+  border: 1px solid var(--branding-grey);
   box-sizing: border-box;
   border-radius: 4px;
   box-shadow: 0px 2px 6px #B7B7B7;
@@ -586,7 +586,7 @@ dl.instructions dt p {
 
 .enabledProjectItem {
   background: linear-gradient(0deg, rgba(0, 161, 255, 0.1), rgba(0, 161, 255, 0.1)), #FFFFFF;
-  border: 2px solid $branding-blue;
+  border: 2px solid var(--branding-blue);
   box-sizing: border-box;
   box-shadow: 0px 2px 6px #B7B7B7;
   border-radius: 4px;
@@ -598,7 +598,7 @@ dl.instructions dt p {
   font-weight: normal;
   line-height: normal;
   font-size: 18px;
-  color: $branding-purple;
+  color: var(--branding-purple);
   padding-top: 24px;
   padding-bottom: 16px;
 }
@@ -623,7 +623,7 @@ dl.instructions dt p {
 }
 
 .flagButton {
-  background: $branding-red;
+  background: var(--branding-red);
   height: 48px !important;
   width: 60px !important;
   -webkit-border-radius: 4px;
@@ -649,7 +649,7 @@ dl.instructions dt p {
 }
 
 .skipButton {
-  background: $branding-dark;
+  background: var(--branding-dark);
   height: 48px !important;
   width: 60px !important;
   -webkit-border-radius: 4px;
@@ -670,8 +670,8 @@ dl.instructions dt p {
   -webkit-box-shadow: none !important;
   -moz-box-shadow: none !important;
   box-shadow: none !important;
-  background-color: $branding-grey;
-  background: $branding-grey;
+  background-color: var(--branding-grey);
+  background: var(--branding-grey);
 }
 
 .w144 {
@@ -687,8 +687,8 @@ dl.instructions dt p {
 }
 
 .doneButton {
-  background: $branding-blue !important;
-  background-color: $branding-blue;
+  background: var(--branding-blue) !important;
+  background-color: var(--branding-blue);
   height: 48px !important;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -749,7 +749,7 @@ dl.instructions dt p {
   width: 50%;
   height: 63px;
   text-align: center;
-  border: 1px solid $branding-grey;
+  border: 1px solid var(--branding-grey);
   border-bottom: 0;
   border-left: 0;
 
@@ -764,7 +764,7 @@ dl.instructions dt p {
   width: 50%;
   height: 63px;
   text-align: center;
-  border: 1px solid $branding-grey;
+  border: 1px solid var(--branding-grey);
   border-bottom: 0;
   border-right: 0;
   border-left: 0.5px;
@@ -804,7 +804,7 @@ dl.instructions dt p {
 }
 
 .modal-button-text-active {
-  color: $branding-blue !important;
+  color: var(--branding-blue) !important;
   font-weight: bold;
 }
 
@@ -814,7 +814,7 @@ dl.instructions dt p {
 }
 
 .modal-report-text-active {
-  color: $branding-red !important;
+  color: var(--branding-red) !important;
   font-weight: bold;
 }
 
@@ -863,13 +863,13 @@ dl.instructions dt p {
 
 .selectedNotSelected:after {
   content: 'TAP CARD TO SELECT' !important;
-  color: $branding-purple;
+  color: var(--branding-purple);
   font-weight: normal;
 }
 
 .selectedSelected:after {
   content: 'SELECTED' !important;
-  color: $branding-blue;
+  color: var(--branding-blue);
   font-weight: bold;
 }
 
@@ -921,12 +921,12 @@ dl.instructions dt p {
 
 .purpleBold {
   font-weight: 500 !important;
-  color: $branding-purple !important;
+  color: var(--branding-purple) !important;
 }
 
 .skipTitlePurple {
   font-weight: bold;
-  color: $branding-purple !important;
+  color: var(--branding-purple) !important;
 }
 
 .skipTitle {
@@ -980,15 +980,15 @@ dl.instructions dt p {
   width: 32px;
   max-width: 32px;
   border-radius: 4px;
-  border: 2px solid $branding-red;
+  border: 2px solid var(--branding-red);
 }
 
 .reportActive {
-  background: $branding-red url('/static/img/reportCheck.svg') no-repeat center center !important;
+  background: var(--branding-red) url('/static/img/reportCheck.svg') no-repeat center center !important;
 }
 
 .redBold {
-  color: $branding-red !important;
+  color: var(--branding-red) !important;
   font-weight: 500 !important;
 }
 
@@ -1016,9 +1016,9 @@ dl.instructions dt p {
   background-color: transparent;
 }
 
-// .admin-data {
-//   display: table-cell;
-// }
+/* .admin-data {
+   display: table-cell;
+ } */
 
 .admin-data-bar {
   padding-bottom: 36px;
@@ -1142,11 +1142,11 @@ dl.instructions dt p {
 
 .admin-table {
   display: block;
-//  border-radius: 4px 4px 0px 0px !important;
+/*  border-radius: 4px 4px 0px 0px !important; */
 }
 
 .admin-tabs {
-  flex-grow: 1;
+  grow: 1;
   min-height: 200px;
 }
 
@@ -1156,7 +1156,7 @@ dl.instructions dt p {
   }
 }
 
-//.admin-table > table {
+/*.admin-table > table {
 //  border-collapse: separate!important;
 //  border-spacing: 0!important;
 //  border-radius: 4px 4px 0px 0px !important;
@@ -1175,7 +1175,7 @@ dl.instructions dt p {
 //  -moz-border-radius: 4px 4px 0px 0px !important;
 //  border: 1px solid #B7B7B7!important;
 //
-//}
+} */
 
 
 .admin-table > table {
@@ -1188,7 +1188,7 @@ dl.instructions dt p {
   box-sizing: border-box;
   height: 48px !important;
   max-height: 48px !important;
-  //border-radius: 4px 4px 0px 0px !important;
+  /* border-radius: 4px 4px 0px 0px !important; */
 }
 
 .admin-header>tr {
@@ -1197,15 +1197,14 @@ dl.instructions dt p {
   box-sizing: border-box;
   height: 48px !important;
   max-height: 48px !important;
-  //border-radius: 4px 4px 0px 0px !important;
+  /* border-radius: 4px 4px 0px 0px !important; */
 }
 
 .admin-table-head {
   border: 0;
-
   max-height: 48px !important;
   padding: 0 !important;
-  //border-radius: 4px 4px 0px 0px !important;
+  /* border-radius: 4px 4px 0px 0px !important; */
 }
 
 .admin-table-head-item {
@@ -1298,7 +1297,7 @@ dl.instructions dt p {
 .disabledeye {
   display: inline-block;
   background: url('/static/img/disabled_eye.svg') center center no-repeat;
-  color: $branding-dark;
+  color: var(--branding-dark);
   width: 12px;
   max-width: 12px;
   max-height: 10.3px;
@@ -1312,7 +1311,7 @@ dl.instructions dt p {
 .trashcan {
   display: inline-block;
   background: url('/static/img/trashcan.svg') center center no-repeat;
-  color: $branding-red;
+  color: var(--branding-red);
   width: 10px;
   max-width: 10px;
   max-height: 9px;
@@ -1354,7 +1353,7 @@ dl.instructions dt p {
   left: 0;
   top: 0;
   overflow: auto;
-  //background: rgba(0, 0, 0, 0.25);
+  /* background: rgba(0, 0, 0, 0.25); */
   -webkit-animation-name: fadeIn;
   -moz-animation-name: fadeIn;
   -o-animation-name: fadeIn;
@@ -1430,10 +1429,10 @@ dl.instructions dt p {
   height: 40px;
   max-height: 40px;
   width: 161px;
-  background: $branding-purple;
-  -webkit-box-shadow: 0px 2px 10px hoff voff blur $branding-grey;
-  -moz-box-shadow: 0px 2px 10px hoff voff blur $branding-grey;
-  box-shadow: 0px 2px 10px hoff voff blur $branding-grey;
+  background: var(--branding-purple);
+  -webkit-box-shadow: 0px 2px 10px hoff voff blur var(--branding-grey);
+  -moz-box-shadow: 0px 2px 10px hoff voff blur var(--branding-grey);
+  box-shadow: 0px 2px 10px hoff voff blur var(--branding-grey);
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
@@ -1443,10 +1442,10 @@ dl.instructions dt p {
   height: 40px;
   max-height: 40px;
   width: 161px;
-  background: $branding-red;
-    -webkit-box-shadow: 0px 2px 10px hoff voff blur $branding-grey;
-  -moz-box-shadow: 0px 2px 10px hoff voff blur $branding-grey;
-  box-shadow: 0px 2px 10px hoff voff blur $branding-grey;
+  background: var(--branding-red);
+    -webkit-box-shadow: 0px 2px 10px hoff voff blur var(--branding-grey);
+  -moz-box-shadow: 0px 2px 10px hoff voff blur var(--branding-grey);
+  box-shadow: 0px 2px 10px hoff voff blur var(--branding-grey);
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
@@ -1457,7 +1456,7 @@ thead th.up>.tablesorter-header-inner>a{
   display: inline-block;
   width: 12px;
   height: 13px;
-  color: $branding-purple;
+  color: var(--branding-purple);
   background: url("/static/img/sorting-arrow.svg") no-repeat left center;
 }
 
@@ -1466,7 +1465,7 @@ thead th.down>.tablesorter-header-inner>a{
   display: inline-block;
   width: 12px;
   height: 13px;
-  color: $branding-purple;
+  color: var(--branding-purple);
   background: url("/static/img/sorting-arrow-down.svg") no-repeat left center;
 }
 
@@ -1520,7 +1519,7 @@ font-weight: 500;
 font-size: 14px;
 line-height: normal;
 text-transform: uppercase;
-  color: $branding-red;
+  color: var(--branding-red);
 }
 
 .normal-white-18 {
@@ -1644,13 +1643,13 @@ color: #000000;
 }
 
 .background-red {
-  background: $branding-red;
+  background: var(--branding-red);
 }
 .background-purple {
-  background: $branding-purple;
+  background: var(--branding-purple);
 }
 .background-grey {
-  background: $branding-grey;
+  background: var(--branding-grey);
 }
 
 .noborder {
@@ -1691,11 +1690,11 @@ p.normal-12 {
 }
 
 .live-active {
-  color: $branding-purple;
+  color: var(--branding-purple);
 }
 
 .live-inactive {
-  color: $branding-red
+  color: var(--branding-red)
 }
 
 td>.reportCheck {
@@ -1787,13 +1786,13 @@ iframe {
 
 .admin-check:checked {
   border: 0 !important;
-  background: $branding-blue url("/static/img/admin_checkmark.svg") no-repeat center center;
+  background: var(--branding-blue) url("/static/img/admin_checkmark.svg") no-repeat center center;
 }
 
 
 .admin-check-active {
   border: 0 !important;
-  background: $branding-blue url("/static/img/admin_checkmark.svg") no-repeat center center;
+  background: var(--branding-blue) url("/static/img/admin_checkmark.svg") no-repeat center center;
 }
 
 .stop-modal {
@@ -1852,5 +1851,5 @@ border-radius: 4px;
 }
 
 .ag-theme-balham .ag-row-selected {
-  background-color: $selected-color!important
+  background-color: var(--selected-color)!important
 }

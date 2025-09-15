@@ -24,8 +24,8 @@
         {% if not virtual %}
         <button class="bg-purple bg-chevron h-4 w-4.8 rounded m-.6" type="button" id="skipButton" onclick="toggleSkip()"></button>
         {% endif %}
-        <form action="/begin" method="post" class="flex-grow">
-          <button class="bg-lightblue h-4 w-14.4 rounded flex-grow m-.6 text-white" title="Done" type="submit" name="action" value="Done">
+        <form action="/begin" method="post" class="grow">
+          <button class="bg-lightblue h-4 w-14.4 rounded grow m-.6 text-white" title="Done" type="submit" name="action" value="Done">
             {{ finished_button_text }}
           </button>
           <input type="hidden" name="item_id" value="{{ item.id }}">
@@ -48,7 +48,7 @@
     {% if not virtual %}
     <button class="skipButton m-.6" title="Skip" type="button" onclick="toggleSkip()"></button>
     {% endif %}
-    <form action="/begin" method="post" class="flex-grow">
+    <form action="/begin" method="post" class="grow">
       <button class="doneButton doneButtonText w-full m-.6" title="Done" type="submit" name="action" value="Done">
         {{ finished_button_text }}
       </button>

@@ -5,11 +5,11 @@
   "repository": "git@github.com:weareasterisk/gavel.git",
   "private": false,
   "scripts": {
-    "build": "cross-env NODE_ENV=production postcss gavel/static/css/tailwind.scss -o gavel/static/generated.scss",
-    "build:watch": "cross-env NODE_ENV=development postcss gavel/static/css/tailwind.scss -o gavel/static/generated.scss -w"
+    "build": "cross-env NODE_ENV=production postcss gavel/static/css/tailwind.css -o gavel/static/generated.css",
+    "build:watch": "cross-env NODE_ENV=development postcss gavel/static/css/tailwind.css -o gavel/static/generated.css -w"
   },
   "devDependencies": {
-    "@tailwindcss/forms": "^0.3.4",
+    "@tailwindcss/forms": "^0.5.10",
     "autoprefixer": "^10.4.21",
     "cross-env": "^7.0.3",
     "cssnano": "^5.1.15",
@@ -17,12 +17,9 @@
     "postcss-cli": "^11.0.1",
     "postcss-import": "^13.0.0",
     "postcss-loader": "^4.3.0",
-    "postcss-modules": "^4.3.1",
-    "postcss-nested": "^5.0.6",
     "postcss-preset-env": "^7.8.3",
-    "postcss-scss": "^3.0.5",
     "postcss-url": "^10.1.3",
-    "tailwindcss": "^2.2.19"
+    "tailwindcss": "^3.4.17"
   },
   "browserslist": {
     "production": [
@@ -37,6 +34,7 @@
     ]
   },
   "dependencies": {
+    "@tailwindcss/nesting": "^0.0.0-insiders.565cd3e",
     "tinycolor2": "^1.4.1"
   }
 }
