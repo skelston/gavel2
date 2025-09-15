@@ -4,6 +4,10 @@
   "description": "Hackathon Judging System",
   "repository": "git@github.com:weareasterisk/gavel.git",
   "private": false,
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=11.0.0"
+  },
   "scripts": {
     "build": "cross-env NODE_ENV=production postcss gavel/static/css/tailwind.css -o gavel/static/generated.css",
     "build:watch": "cross-env NODE_ENV=development postcss gavel/static/css/tailwind.css -o gavel/static/generated.css -w"
