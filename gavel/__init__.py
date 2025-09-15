@@ -3,6 +3,9 @@
 # This software is released under AGPLv3. See the included LICENSE.txt for
 # details.
 
+import gevent.monkey
+gevent.monkey.patch_all()
+
 import os
 
 from flask import Flask
@@ -10,9 +13,7 @@ from flask_compress import Compress
 from flask_minify import minify
 from flask_socketio import SocketIO
 from flask_json import FlaskJSON
-import eventlet
 
-eventlet.monkey_patch(os=True, select=True, socket=True, thread=True, time=True, psycopg=True)
 
 BASE_DIR = os.path.dirname(__file__)
 
@@ -58,26 +59,30 @@ app.config['SECRET_KEY'] = settings.SECRET_KEY
 from flask_assets import Environment, Bundle
 
 assets = Environment(app)
-assets.config['pyscss_style'] = 'expanded'
 assets.url = app.static_url_path
 
-bundles = {
-  'scss_all': Bundle(
-    'generated.scss',
-    depends='**/*.scss',
-    filters=('libsass',),
-    output='all.css'
-  ),
-  'admin_js': Bundle(
+# CSS bundle for Tailwind-generated CSS
+css_bundle = Bundle(
+    'generated.css',           # Your Tailwind output file
+    depends='**/*.css',        # Rebuild if any CSS changes
+    output='all.css'           # This will be generated in /static
+)
+admin_js_bundle = Bundle(
     'js/admin/admin_live.js',
     'js/admin/admin_service.js',
     depends='**/*.js',
-    filters=('rjsmin',),
+    filters='rjsmin',
     output='admin_all.js'
-  )
-}
+)
 
-assets.register(bundles)
+# Register bundles
+assets.register('all', css_bundle)
+assets.register('admin_js', admin_js_bundle)
+
+# Build automatically in debug mode
+if app.debug:
+    css_bundle.build(force=True)
+    admin_js_bundle.build(force=True)
 
 @app.context_processor
 def inject_context():
@@ -104,7 +109,7 @@ ma.app = app
 ma.init_app(app)
 
 SOCKETIO_REDIS_URL = settings.BROKER_URI
-async_mode="eventlet"
+async_mode="gevent"
 
 socketio = SocketIO(app, async_mode=async_mode, message_queue=SOCKETIO_REDIS_URL, async_handlers=True)
 

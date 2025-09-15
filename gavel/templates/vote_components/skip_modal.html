@@ -7,26 +7,33 @@
     }
     function setSkips() {
       let button = document.getElementById('modalSkipButton');
-      let buttonText = document.getElementById('modalSkipText');
       let radios = document.forms['skipForm'].elements['action'];
       let radioCount = 0;
-      for(let i = 0; i < radios.length; i++) {
+
+      for (let i = 0; i < radios.length; i++) {
         if (radios[i].checked) {
           radioCount++;
+          break; // Exit the loop as soon as a checked radio is found
         }
       }
 
-      buttonText.classList.toggle("text-purple", radioCount > 0);
-      buttonText.classList.toggle("text-lightgray", radioCount < 1);
-      button.classList.toggle('bg-fadedpurple', radioCount > 0);
-      button.classList.toggle('md:bg-purple', radioCount > 0);
-      button.classList.toggle('md:bg-lightgray', radioCount < 1);
-      button.type = radioCount > 0 ? 'submit' : 'button';
+      // Update button classes and properties
+      const isChecked = radioCount > 0;
+      const buttonText = document.getElementById('modalSkipText');
 
+      buttonText.classList.toggle("text-purple", isChecked);
+      buttonText.classList.toggle("text-lightgray", !isChecked);
+      button.classList.toggle('bg-fadedpurple', isChecked);
+      button.classList.toggle('md:bg-purple', isChecked);
+      button.classList.toggle('md:bg-lightgray', !isChecked);
+      
+      // The crucial part: enable/disable the button
+      button.disabled = !isChecked; 
     }
   </script>
+
   <div class="modal md:justify-center md:items-center z-0 pointer" id="skipModal">
-    <div class="fixed bottom-0 bg-white md:flex md:bottom-auto md:w-44 z-500 flex-wrap md:rounded-8 cursor-default">
+    <div class="fixed bottom-0 bg-white md:flex md:bottom-auto md:w-44 z-500 flex-wrap md:rounded-8 cursor-default pb-8">
       <div class="bg-cross hidden md:block md:absolute top-2.4 right-2.4 cursor-pointer h-1.2 w-1.2" onclick="toggleSkip(false)"></div>
       <div class="md:m-2.4 m-1.6">
         <h2 class="pb-1.6 text-18 md:pr-2.4">I need to skip the <span class="text-indigo font-medium">current project</span> because:</h2>
@@ -42,13 +49,15 @@
         </div>
       </div>
 
-      <div class="w-full flex flex-no-wrap h-6.4 md:h-auto md:border-none border-t border-lightgray md:justify-end md:mx-2.4 md:mb-2.4">
+      <div class="w-full flex flex-nowrap h-6.4 md:h-auto md:border-none border-t border-lightgray md:justify-end md:mx-2.4 md:mb-2.4">
         <div class="w-1/2 text-center flex justify-around border-r border-lightgray md:hidden">
           <span class="h-full w-full flex items-center justify-around text-12 center uppercase text-indigo pointer" id="skipCloseButton" onclick="toggleSkip(false)">CLOSE</span>
         </div>
         <div class="w-1/2 md:w-auto text-center flex justify-around md:justify-end md:text-white">
           <form action="{{ action }}" method="post" class="h-full w-full flex items-center justify-around text-12 center uppercase text-indigo" id="skipForm">
-            <button id="modalSkipButton" class="w-full h-full md:h-4 md:bg-lightgray pointer md:rounded md:px-1.4" type="submit"><a class="uppercase text-lightgray text-bold md:text-white" id="modalSkipText" style="margin: 0;">CONFIRM SKIP</a></button>
+            <button id="modalSkipButton" class="w-full h-full md:h-4 md:bg-lightgray pointer md:rounded md:px-1.4" type="submit" disabled>
+              <a class="uppercase text-lightgray text-bold md:text-white" id="modalSkipText" style="margin: 0;">CONFIRM SKIP</a>
+            </button>
             {% if prev and next %}
               <input type="hidden" name="prev_id" value="{{ prev.id }}">
               <input type="hidden" name="next_id" value="{{ next.id }}">

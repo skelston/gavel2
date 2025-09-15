@@ -2,7 +2,7 @@
 <html lang="en" id="main">
   <head>
     <!-- Stylesheets -->
-    {% assets "scss_all" %}
+    {% assets "all" %}
     <link rel=stylesheet type=text/css href="{{ ASSET_URL }}">
     {% endassets %}
 
@@ -13,7 +13,7 @@
     <link href="//fonts.googleapis.com/css?family=Rubik:400,500,700&display=swap" rel="stylesheet">
 
     <!-- Enable responsiveness on mobile devices -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     <title>{% block title %}{% endblock %} &middot; Gavel</title>
     {% block head %}

@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:10.8-alpine
+    image: postgres:16-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
@@ -8,62 +8,49 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     restart: on-failure
-    # Ports exposed for host machine access if needed for debugging
     ports:
-      - "5432:5432"
-
+      - 5432:5432
   redis:
-    image: redis:5.0-alpine
+    image: redis:7-alpine
     restart: on-failure
-    # Ports exposed for host machine access if needed for debugging
     ports:
-      - "6379:6379"
+      - 6379:6379
 
-  web:
-    build: .
-    environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgres/postgres
-      - REDIS_URL=redis://redis:6379/0
-      - IGNORE_CONFIG_FILE=true
-      - SECRET_KEY=your-secret-key-here-change-in-production
-      - FLASK_DEBUG=1
-      - PORT=5001
-      - POSTGRES_DB=postgres  
-      - POSTGRES_USER=postgres 
-      - POSTGRES_PASSWORD=postgres 
-      
-      # Add other environment variables as needed (from your old commented section):
-      # - ADMIN_PASSWORD=admin
-      # - BASE_URL=localhost
-      # - EMAIL_FROM=
-      # - EMAIL_USER=
-      # - EMAIL_PASSWORD=
-    ports:
-      - "5001:5001"
-    depends_on:
-      - postgres
-      - redis
-    volumes:
-      # Mount source code for live reloading. Crucial for development!
-      - .:/web
-    # The entrypoint script (docker-entrypoint.sh) will handle DB init and then run gunicorn
-    # Remove the 'command' override to use the ENTRYPOINT/CMD from the Dockerfile,
-    # or define it here if you prefer.
-    command: ./docker-entrypoint-dev.sh
+#  gavel:
+#    environment:
+#        - DATABASE_URL=postgres://gavel:gavel@postgres/gavel
+#        - ADMIN_PASSWORD=admin
+#        - REDIS_URL=redis://redis/0
+#        - BASE_URL=localhost
+#        - EMAIL_FROM=
+#        - EMAIL_USER=
+#        - EMAIL_PASSWORD=
+#        - IGNORE_CONFIG_FILE=true
+#        - SECRET_KEY=asdasd
+#        - FLASK_DEBUG=1
+#    build: .
+#    ports:
+#      - "5000:5000"
+#    depends_on:
+#      - postgres
+#    volumes:
+#      - './gavel:/web/gavel'
+#    command: bash -c "python initialize.py && /usr/local/bin/gunicorn gavel:app -c workers.py"
 
-  worker:
-    build: .
-    environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgres/postgres
-      - REDIS_URL=redis://redis:6379/0
-      - IGNORE_CONFIG_FILE=true
-    depends_on:
-      - postgres
-      - redis
-    volumes:
-      # Optional: Mount source code if you want live reloading for the worker too
-      - .:/web
-    command: celery -A gavel:celery worker --loglevel=info
+
+#  worker:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    user: nobody
+#    environment:
+#      - REDIS_URL=redis://redis/0
+#    depends_on:
+#      - gavel
+#      - redis
+#    ports:
+#        - "5555"
+#    command: celery -A gavel:celery worker
 
 volumes:
   postgres_data: {}

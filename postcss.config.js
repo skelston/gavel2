@@ -1,20 +1,17 @@
-const purgecss = require('@fullhuman/postcss-purgecss')
 const cssnano = require('cssnano')
-
 const isProd = process.env.NODE_ENV === "production"
 
 module.exports = {
   modules: true,
-  syntax: 'postcss-scss',
   plugins: [
     require('postcss-import'),
+    require('@tailwindcss/nesting'),
     require('tailwindcss'),
     require('autoprefixer')(),
     require('postcss-url'),
-    require('postcss-nested'),
     require('postcss-preset-env')({
       features: {
-          'nesting-rules': true
+          'nesting-rules': false
       },
       browsers: [
           '> 1%',
@@ -25,12 +22,6 @@ module.exports = {
 
     isProd 
     ? cssnano({preset: 'default'}) 
-    : null,
-
-    isProd
-    ? purgecss({
-      content: ['./gavel/**/*.html', './gavel/**/*.js'],
-      defaultExtractor: content => content.match(/[\w-/:%.]+(?<!:)/g) || []
-    }) : null
+    : null
   ],
 };

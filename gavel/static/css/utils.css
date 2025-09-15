@@ -1,0 +1,17 @@
+.btn {
+  text-align: center;
+  letter-spacing: 0.02em;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+.pb-safe {
+  padding-bottom: constant(safe-area-inset-bottom); /* iOS 11.0–11.2 */
+  padding-bottom: env(safe-area-inset-bottom);      /* iOS 11.2+ */
+}
+
+.mb-safe {
+  margin-bottom: constant(safe-area-inset-bottom);
+  margin-bottom: env(safe-area-inset-bottom);
+}

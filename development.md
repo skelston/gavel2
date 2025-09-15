@@ -31,10 +31,10 @@ docker-compose logs -f
 
 This command will:
 * Build the Docker image defined in the `Dockerfile`.
-* Run the container, mapping port **5000** on your host machine to port **5000** inside the container.
+* Run the container, mapping port **5001** on your host machine to port **5001** inside the container.
 * Start the application using the command in the `Dockerfile`.
 
-Now, on your local machine, you should be able to navigate to `http://localhost:5000/` and see Gavel running!
+Now, on your local machine, you should be able to navigate to `http://localhost:5001/` and see Gavel running!
 
 #### 2. Initial Setup (First Time Run)
 
@@ -51,7 +51,7 @@ On the **first run only**, you need to initialize the database. You can do this 
     docker-compose exec web python initialize.py
     ```
 
-You should now be able to go to `http://localhost:5000/admin` and log in with the username "admin" and the password "admin".
+You should now be able to go to `http://localhost:5001/admin` and log in with the username "admin" and the password "admin".
 
 #### 3. Development Workflow
 
@@ -103,7 +103,7 @@ This is not the recommended way to do things, so this section isn't super detail
 
     # Then bring it back up and re-initialize
     docker-compose up -d
-    docker-compose exec web python initialize.py
+    docker-compose exec web python /web/initialize.py
     ```
 
 * This project uses [EditorConfig][editorconfig]. [Download][editorconfig-download] a plugin for your editor!
