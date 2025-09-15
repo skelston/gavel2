@@ -1,6 +1,4 @@
-const purgecss = require('@fullhuman/postcss-purgecss')
 const cssnano = require('cssnano')
-
 const isProd = process.env.NODE_ENV === "production"
 
 module.exports = {
@@ -25,12 +23,6 @@ module.exports = {
 
     isProd 
     ? cssnano({preset: 'default'}) 
-    : null,
-
-    isProd
-    ? purgecss({
-      content: ['./gavel/**/*.html', './gavel/**/*.js'],
-      defaultExtractor: content => content.match(/[\w-/:%.]+(?<!:)/g) || []
-    }) : null
+    : null
   ],
 };

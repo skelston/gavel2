@@ -1,12 +1,10 @@
-const tinycolor = require("tinycolor2")
-
 module.exports = {
   prefix: '',
   important: false,
   separator: ':',
   theme: {
     screens: {
-      xs: '480px',
+     // xs: '480px',
       sm: '640px',
       md: '768px',
       lg: '1024px',
@@ -16,12 +14,12 @@ module.exports = {
       white: "#ffffff",
       black: "#000000",
       lightblue: "#179BE8",
-      fadedlightblue: tinycolor("#179BE8").setAlpha("0.15").toRgbString(),
+      fadedlightblue: "#179BE825",
       indigo: "#000F9B",
       red: "#FF6666",
-      fadedred: tinycolor("#FF6666").setAlpha("0.15").toRgbString(),
+      fadedred: "#FF666626",
       purple: "#5F4BB6",
-      fadedpurple: tinycolor('#5F4BB6').setAlpha("0.1").toRgbString(),
+      fadedpurple: "#5F4BB61A",
       gray: "#898989",
       lightgray: "#B7B7B7",
     },
