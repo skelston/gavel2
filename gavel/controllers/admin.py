@@ -245,7 +245,9 @@ def admin_annotators():
     try:
       annotator_dumped = annotator_schema.dump(an)
       annotator_dumped.update({
-        'votes': counts.get(an.id, 0)
+        'votes': counts.get(an.id, 0),
+        'next_id': an.next_id,
+        'prev_id': an.prev_id
       })
       annotators_dumped.append(annotator_dumped)
     except:
