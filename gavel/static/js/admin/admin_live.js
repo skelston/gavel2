@@ -79,7 +79,7 @@ window.addEventListener("DOMContentLoaded", () => {
   // socket.on('setting.inserted', (message) => standardize(message, handleSettingInsert))
   // socket.on('setting.updated', (message) => standardize(message, handleSettingUpdate))
 
-  console.log("WebSocket Liteners Initialized")
+  console.log("WebSocket Listeners Initialized")
 })
 
 function standardize({target}, handler) {
@@ -230,8 +230,8 @@ async function initTables() {
     {headerName:"Email", field:"email", filter: true},
     {headerName:"Description", field: "description", ...standardDescriptionOptions},
     {headerName:"Votes", field:"votes", minWidth: minDecimalWidth, width: standardDecimalWidth},
-    {headerName:"Next (ID)", field:"next", width: standardDecimalWidth},
-    {headerName:"Prev. (ID)", field:"prev", width: standardDecimalWidth},
+    {headerName:"Next (ID)", field:"next_id", width: standardDecimalWidth},
+    {headerName:"Prev. (ID)", field:"prev_id", width: standardDecimalWidth},
     {headerName:"Updated", field:"updated", ...standardUpdatedOptions},
   ]
   
