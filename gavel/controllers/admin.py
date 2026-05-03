@@ -1,10 +1,10 @@
 from gavel import app
-from gavel import socketio
 from gavel.models import *
 from gavel.schemas import *
 from gavel.constants import *
 import gavel.settings as settings
 import gavel.utils as utils
+import gavel.sse as sse
 from flask import (
   redirect,
   render_template,
@@ -18,7 +18,6 @@ from gavel import JSON
 from flask_json import json_response, as_json
 from collections import defaultdict
 
-socket = socketio
 from sqlalchemy import event
 
 try:
@@ -490,7 +489,7 @@ def admin_api_session():
       with_retries(tx)
 
     try:
-      socketio.emit(SESSION_UPDATED, {
+      sse.publish(SESSION_UPDATED, {
         'type': "session",
         'target': {
           "hard_state": setting_stop == SETTING_TRUE,
@@ -498,8 +497,8 @@ def admin_api_session():
           "action": action,
           "key": key
         }
-      }, namespace='/admin')
-    except Exception as ignored:
+      })
+    except Exception:
       pass
 
   return json_response(

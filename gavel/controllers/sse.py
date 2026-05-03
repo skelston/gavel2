@@ -1,19 +1,18 @@
 from gavel import app
-from gavel import socketio
-from flask_socketio import emit
 from gavel.constants import *
 from gavel.models import *
 from gavel.schemas import ItemSchema, AnnotatorSchema, FlagSchema, SettingSchema
-import gavel.settings as settings
 import gavel.utils as utils
+import gavel.sse as sse
 from sqlalchemy import event
 from sqlalchemy import (or_, not_)
-from flask import (json)
+from flask import json, request, jsonify
 
 item_schema = ItemSchema()
 annotator_schema = AnnotatorSchema()
 flag_schema = FlagSchema()
 setting_schema = SettingSchema()
+
 
 def standardize(target):
   try:
@@ -40,7 +39,6 @@ def standardize(target):
         'target': json.dumps([setting_schema.dump(it) for it in settings])
       }
     else:
-      # Legacy to_dict() due to schema ambiguity
       return {
         'type': name,
         'target': json.dumps(target.to_dict())
@@ -52,13 +50,14 @@ def standardize(target):
       'target': json.dumps({'error': 'true'})
     }
 
+
 def injectAnnotator(target, target_dumped):
   count = Decision.query.filter(Decision.annotator_id == target.id).count()
   target_dumped.update({
     'votes': count
   })
-
   return target_dumped
+
 
 def injectFlag(target, target_dumped):
   target_dumped.update({
@@ -67,6 +66,7 @@ def injectFlag(target, target_dumped):
     'annotator_name': target.annotator.name
   })
   return target_dumped
+
 
 def injectItem(target, target_dumped):
   assigned = Annotator.query.filter(Annotator.next == target).all()
@@ -87,78 +87,67 @@ def injectItem(target, target_dumped):
   })
   return target_dumped
 
-@socketio.on('user.connected', namespace='/admin')
-def test_connect(data):
-  emit(CONNECT, data, namespace='/admin')
 
-@socketio.on('annotator.updated.confirmed', namespace='/admin')
+@app.route('/admin/events')
 @utils.requires_auth
-def runRelatedItemUpdates(data):
-  triggerRelatedItemUpdates(data)
+def sse_stream():
+  return sse.create_sse_response(None)
 
-def triggerRelatedItemUpdates(data):
+
+@app.route('/admin/api/annotator-updated', methods=['POST'])
+@utils.requires_auth
+def annotator_updated_confirmed():
+  data = request.get_json()
   try:
     ignore_ids = {i['id'] for i in data['ignore']}
     items = Item.query.filter(Item.id.in_(ignore_ids))
     for i in items:
-      socketio.emit(ITEM_UPDATED, {'type': "item", 'target': json.dumps(injectItem(i, item_schema.dump(i)))}, namespace='/admin')
-  except Exception as e:
-    return
+      sse.publish(ITEM_UPDATED, {'type': "item", 'target': json.dumps(injectItem(i, item_schema.dump(i)))})
+  except Exception:
+    pass
+  return jsonify({"status": "ok"})
+
 
 @event.listens_for(Annotator, 'after_insert')
-@utils.requires_auth
 def annotator_listen_insert(mapper, connection, target):
-  socketio.emit(ANNOTATOR_INSERTED, standardize(target), namespace='/admin')
+  sse.publish(ANNOTATOR_INSERTED, standardize(target))
 
 @event.listens_for(Annotator, 'after_update')
-@utils.requires_auth
 def annotator_listen_modify(mapper, connection, target):
-  socketio.emit(ANNOTATOR_UPDATED, standardize(target), namespace='/admin')
+  sse.publish(ANNOTATOR_UPDATED, standardize(target))
 
 @event.listens_for(Annotator, 'after_delete')
-@utils.requires_auth
 def annotator_listen_delete(mapper, connection, target):
-  print(str(target), str(mapper))
-  socketio.emit(ANNOTATOR_DELETED, {"target": json.dumps(annotator_schema.dump(target))}, namespace='/admin')
+  sse.publish(ANNOTATOR_DELETED, {"target": json.dumps(annotator_schema.dump(target))})
 
 @event.listens_for(Item, 'after_insert')
-@utils.requires_auth
 def item_listen_insert(mapper, connection, target):
-  socketio.emit(ITEM_INSERTED, standardize(target), namespace='/admin')
+  sse.publish(ITEM_INSERTED, standardize(target))
 
 @event.listens_for(Item, 'after_update')
-@utils.requires_auth
 def item_listen_modify(mapper, connection, target):
-  socketio.emit(ITEM_UPDATED, standardize(target), namespace='/admin')
+  sse.publish(ITEM_UPDATED, standardize(target))
 
 @event.listens_for(Item, 'after_delete')
-@utils.requires_auth
 def item_listen_delete(mapper, connection, target):
-  print(str(target), str(mapper))
-  socketio.emit(ITEM_DELETED, {"target": item_schema.dump(target)}, namespace='/admin')
+  sse.publish(ITEM_DELETED, {"target": item_schema.dump(target)})
 
 @event.listens_for(Flag, 'after_insert')
-@utils.requires_auth
 def flag_listen_insert(mapper, connection, target):
-  socketio.emit(FLAG_INSERTED, standardize(target), namespace='/admin')
+  sse.publish(FLAG_INSERTED, standardize(target))
 
 @event.listens_for(Flag, 'after_update')
-@utils.requires_auth
 def flag_listen_update(mapper, connection, target):
-  socketio.emit(FLAG_UPDATED, standardize(target), namespace='/admin')
+  sse.publish(FLAG_UPDATED, standardize(target))
 
 @event.listens_for(Flag, 'after_delete')
-@utils.requires_auth
 def flag_listen_delete(mapper, connection, target):
-  print(str(target), str(mapper))
-  socketio.emit(FLAG_DELETED, {"target": json.dumps(flag_schema.dump(target))}, namespace='/admin')
+  sse.publish(FLAG_DELETED, {"target": json.dumps(flag_schema.dump(target))})
 
 @event.listens_for(Setting, 'after_insert')
-@utils.requires_auth
 def setting_listen_insert(mapper, connection, target):
-  socketio.emit(SETTING_INSERTED, standardize(target), namespace='/admin')
+  sse.publish(SETTING_INSERTED, standardize(target))
 
 @event.listens_for(Setting, 'after_update')
-@utils.requires_auth
 def setting_listen_update(mapper, connection, target):
-  socketio.emit(SETTING_UPDATED, standardize(target), namespace='/admin')
+  sse.publish(SETTING_UPDATED, standardize(target))

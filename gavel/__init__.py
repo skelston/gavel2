@@ -11,7 +11,6 @@ import os
 from flask import Flask
 from flask_compress import Compress
 from flask_minify import minify
-from flask_socketio import SocketIO
 from flask_json import FlaskJSON
 
 
@@ -75,11 +74,6 @@ db.app = app
 db.init_app(app)
 ma.app = app
 ma.init_app(app)
-
-SOCKETIO_REDIS_URL = settings.BROKER_URI
-async_mode="gevent"
-
-socketio = SocketIO(app, async_mode=async_mode, message_queue=SOCKETIO_REDIS_URL, async_handlers=True)
 
 import gavel.template_filters  # registers template filters
 

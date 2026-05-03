@@ -1,5 +1,4 @@
 appdirs==1.4.4
-bidict==0.23.1
 blinker==1.9.0
 Brotli==1.1.0
 certifi==2025.7.14
@@ -13,12 +12,10 @@ Flask-Compress==1.18
 Flask-JSON==0.4.0
 flask-marshmallow==1.3.0
 Flask-Minify==0.50
-Flask-SocketIO==5.5.1
 Flask-SQLAlchemy==3.1.1
 gevent==25.8.2
 greenlet==3.2.3
 gunicorn==23.0.0
-h11==0.16.0
 htmlmin==0.1.12
 htmlminf==0.1.13
 humanize==4.12.3
@@ -35,8 +32,6 @@ packaging==25.0
 psycopg2-binary==2.9.10
 python-dateutil==2.9.0.post0
 python-dotenv==1.1.1
-python-engineio==4.12.2
-python-socketio==5.13.0
 pytz==2019.3
 PyYAML==6.0.2
 pyzstd==0.17.0
@@ -44,14 +39,12 @@ redis==6.2.0
 requests==2.32.4
 scipy==1.16.1
 setuptools==80.9.0
-simple-websocket==1.1.0
 six==1.17.0
 SQLAlchemy==2.0.41
 typing_extensions==4.15.0
 tzdata==2025.2
 urllib3==2.5.0
 Werkzeug==3.1.3
-wsproto==1.2.0
 xlrd==2.0.2
 xxhash==3.5.0
 zipp==3.23.0

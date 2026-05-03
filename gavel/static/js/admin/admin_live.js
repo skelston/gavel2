@@ -1,6 +1,6 @@
 let currentAnnotators;
 let currentItems;
-let socket;
+let evtSource;
 
 /*
 * BEGIN REFRESH FUNCTION
@@ -18,7 +18,7 @@ function setIsVirtual(v) {
   isVirtual = !!v
 }
 
-function getIsVirtual() { 
+function getIsVirtual() {
   return !!isVirtual
 }
 
@@ -46,40 +46,33 @@ let itemData;
 let flagData;
 
 window.addEventListener("DOMContentLoaded", () => {
-  socket = io("/admin", { secure: true, transports: [ "flashsocket","websocket" ] })
-  
+  evtSource = new EventSource("/admin/events");
+
   initTables();
 
-  socket.on('connect', () => {
-    socket.emit('user.connected', {
-      data: 'User Connected'
-    })
-  })
+  evtSource.addEventListener('connected', (e) => {
+    console.log("SSE Client Successfully Initialized");
+  });
 
-  socket.on('connected', (message) => {
-    console.log(socket.connected ? "WebSocket Client Successfully Initialized" : "WebSocket Client Unable to be Initialized");
-    console.log(message);
-  })
+  evtSource.addEventListener('annotator.inserted', (e) => standardize(JSON.parse(e.data), handleAnnotatorInsert))
+  evtSource.addEventListener('annotator.updated', (e) => standardize(JSON.parse(e.data), handleAnnotatorUpdate))
+  evtSource.addEventListener('annotator.deleted', (e) => standardize(JSON.parse(e.data), handleAnnotatorDelete))
 
-  socket.on('annotator.inserted', (message) => standardize(message, handleAnnotatorInsert))
-  socket.on('annotator.updated', (message) => standardize(message, handleAnnotatorUpdate))
-  socket.on('annotator.deleted', (message) => standardize(message, handleAnnotatorDelete))
+  evtSource.addEventListener('item.inserted', (e) => standardize(JSON.parse(e.data), handleItemInsert))
+  evtSource.addEventListener('item.updated', (e) => standardize(JSON.parse(e.data), handleItemUpdate))
+  evtSource.addEventListener('item.deleted', (e) => standardize(JSON.parse(e.data), handleItemDelete))
 
-  socket.on('item.inserted', (message) => standardize(message, handleItemInsert))
-  socket.on('item.updated', (message) => standardize(message, handleItemUpdate))
-  socket.on('item.deleted', (message) => standardize(message, handleItemDelete))
-  
-  socket.on('flag.inserted', (message) => standardize(message, handleFlagInsert))
-  socket.on('flag.updated', (message) => standardize(message, handleFlagUpdate))
-  socket.on('flag.deleted', (message) => standardize(message, handleFlagDelete))
+  evtSource.addEventListener('flag.inserted', (e) => standardize(JSON.parse(e.data), handleFlagInsert))
+  evtSource.addEventListener('flag.updated', (e) => standardize(JSON.parse(e.data), handleFlagUpdate))
+  evtSource.addEventListener('flag.deleted', (e) => standardize(JSON.parse(e.data), handleFlagDelete))
 
-  socket.on('session.updated', (message) => standardize(message, handleSessionUpdate))
+  evtSource.addEventListener('session.updated', (e) => standardize(JSON.parse(e.data), handleSessionUpdate))
 
-  // TODO: Figure this out
-  // socket.on('setting.inserted', (message) => standardize(message, handleSettingInsert))
-  // socket.on('setting.updated', (message) => standardize(message, handleSettingUpdate))
+  evtSource.onerror = () => {
+    console.log("SSE connection lost, will auto-reconnect");
+  };
 
-  console.log("WebSocket Listeners Initialized")
+  console.log("SSE Listeners Initialized")
 })
 
 function standardize({target}, handler) {
@@ -88,74 +81,62 @@ function standardize({target}, handler) {
 
 async function updateAndTriggerUpdate(target, {api}) {
   if (getDebugState()) console.log("updated", target)
-  Promise.resolve(api.getRowNode(target.id).setData(target))
+  api.getRowNode(target.id).setData(target)
 }
 
 async function handleItemUpdate(target) {
-  Promise.resolve(updateAndTriggerUpdate(target, itemData))
-    .then(socket.emit('item.updated.confirmed'))
+  updateAndTriggerUpdate(target, itemData)
 }
 
 async function handleAnnotatorUpdate(target) {
-  Promise.resolve(updateAndTriggerUpdate(target, annotatorData))
-    .then(socket.emit('annotator.updated.confirmed', target))
+  updateAndTriggerUpdate(target, annotatorData)
+  fetch('/admin/api/annotator-updated', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json', 'X-CSRFToken': getToken()},
+    body: JSON.stringify(target)
+  })
 }
 
 async function handleFlagUpdate(target) {
-  Promise.resolve(updateAndTriggerUpdate(target, flagData))
-    .then(socket.emit('flag.updated.confirmed', target))
+  updateAndTriggerUpdate(target, flagData)
 }
 
 function handleSettingUpdate(target) {
   sessionButtonState(target)
-  socket.emit('setting.updated.confirmed', target)
 }
 
 async function handleItemInsert(target) {
-  Promise.resolve(itemData.api.updateRowData({add: [target]}))
-    .then(socket.emit('item.inserted.confirmed', target))
+  itemData.api.updateRowData({add: [target]})
 }
 
 async function handleAnnotatorInsert(target) {
-  Promise.resolve(annotatorData.api.updateRowData({add: [target]}))
-    .then(socket.emit('annotator.inserted.confirmed', target))
+  annotatorData.api.updateRowData({add: [target]})
 }
 
 async function handleFlagInsert(target) {
-  Promise.resolve(flagData.api.updateRowData({add: [target]}))
-    .then(socket.emit('flag.inserted.confirmed', target))
+  flagData.api.updateRowData({add: [target]})
 }
 
 async function handleSettingInsert(target) {
   sessionButtonState(target)
-  socket.emit('setting.inserted.confirmed', target)
 }
 
 async function handleItemDelete(target) {
-  Promise.resolve(itemData.api.updateRowData({delete: [target]}))
-    .then(socket.emit('item.deleted.confirmed'))
+  itemData.api.updateRowData({delete: [target]})
 }
 
 async function handleAnnotatorDelete(target) {
-  Promise.resolve(annotatorData.api.updateRowData({delete: [target]}))
-    .then(socket.emit('annotator.deleted.confirmed'))
+  annotatorData.api.updateRowData({delete: [target]})
 }
 
 async function handleFlagDelete(target) {
-  Promise.resolve(flagData.api.updateRowData({delete: [target]}))
-    .then(socket.emit('flag.deleted.confirmed'))
+  flagData.api.updateRowData({delete: [target]})
 }
 
 async function handleSessionUpdate(target) {
   const { hard_state, soft_state } = target;
-  Promise.resolve(handleSessionButtonStateChange(!!hard_state, !!soft_state))
-    .then(socket.emit('session.updated.confirmed'))
+  handleSessionButtonStateChange(!!hard_state, !!soft_state)
 }
-
-// async function handleSettingDelete(target) {
-//   Promise.resolve(settingD.api.updateRowData({delete: [target]}))
-//     .then(socket.emit('item.deleted.confirmed'))
-// }
 
 
 const standardIdWidth = 80

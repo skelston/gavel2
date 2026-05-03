@@ -4,4 +4,4 @@ import gavel.controllers.admin
 import gavel.controllers.api
 import gavel.controllers.judge
 import gavel.controllers.error
-import gavel.controllers.socket
+import gavel.controllers.sse
