@@ -1,1 +1,1 @@
-web: python initialize.py && gunicorn -k gevent gavel:app --workers=3 --bind 0.0.0.0:$PORT
+web: python initialize.py && gunicorn --workers=1 --threads=24 gavel:app --bind 0.0.0.0:$PORT

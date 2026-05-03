@@ -65,10 +65,6 @@ DB_URI =              c.get('db_uri',          ['DATABASE_URL', 'DB_URI'], defau
 # Patch for SQLAlchemy: convert postgres:// to postgresql://
 if DB_URI.startswith('postgres://'):
     DB_URI = DB_URI.replace('postgres://', 'postgresql://', 1)
-BROKER_URI =          c.get('broker_uri',      ['REDIS_URL', 'BROKER_URI'], default='redis://localhost:6379/0')
-# Patch for Redis SSL: disable cert verification if using rediss://
-if BROKER_URI.startswith('rediss://') and '?ssl_cert_reqs=none' not in BROKER_URI:
-    BROKER_URI += '?ssl_cert_reqs=none'
 SECRET_KEY =          c.get('secret_key',      'SECRET_KEY')
 PORT =            int(c.get('port',            'PORT',                     default=5000))
 MIN_VIEWS =       int(c.get('min_views',       'MIN_VIEWS',                default=4))

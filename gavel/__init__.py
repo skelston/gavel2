@@ -3,9 +3,6 @@
 # This software is released under AGPLv3. See the included LICENSE.txt for
 # details.
 
-import gevent.monkey
-gevent.monkey.patch_all()
-
 import os
 
 from flask import Flask

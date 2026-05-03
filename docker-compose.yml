@@ -10,47 +10,6 @@ services:
     restart: on-failure
     ports:
       - 5432:5432
-  redis:
-    image: redis:7-alpine
-    restart: on-failure
-    ports:
-      - 6379:6379
-
-#  gavel:
-#    environment:
-#        - DATABASE_URL=postgres://gavel:gavel@postgres/gavel
-#        - ADMIN_PASSWORD=admin
-#        - REDIS_URL=redis://redis/0
-#        - BASE_URL=localhost
-#        - EMAIL_FROM=
-#        - EMAIL_USER=
-#        - EMAIL_PASSWORD=
-#        - IGNORE_CONFIG_FILE=true
-#        - SECRET_KEY=asdasd
-#        - FLASK_DEBUG=1
-#    build: .
-#    ports:
-#      - "5000:5000"
-#    depends_on:
-#      - postgres
-#    volumes:
-#      - './gavel:/web/gavel'
-#    command: bash -c "python initialize.py && /usr/local/bin/gunicorn gavel:app -c workers.py"
-
-
-#  worker:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    user: nobody
-#    environment:
-#      - REDIS_URL=redis://redis/0
-#    depends_on:
-#      - gavel
-#      - redis
-#    ports:
-#        - "5555"
-#    command: celery -A gavel:celery worker
 
 volumes:
   postgres_data: {}
