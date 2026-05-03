@@ -56,33 +56,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = settings.DB_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = settings.SECRET_KEY
 
-from flask_assets import Environment, Bundle
-
-assets = Environment(app)
-assets.url = app.static_url_path
-
-# CSS bundle for Tailwind-generated CSS
-css_bundle = Bundle(
-    'generated.css',           # Your Tailwind output file
-    depends='**/*.css',        # Rebuild if any CSS changes
-    output='all.css'           # This will be generated in /static
-)
-admin_js_bundle = Bundle(
-    'js/admin/admin_live.js',
-    'js/admin/admin_service.js',
-    depends='**/*.js',
-    filters='rjsmin',
-    output='admin_all.js'
-)
-
-# Register bundles
-assets.register('all', css_bundle)
-assets.register('admin_js', admin_js_bundle)
-
-# Build automatically in debug mode
-if app.debug:
-    css_bundle.build(force=True)
-    admin_js_bundle.build(force=True)
 
 @app.context_processor
 def inject_context():

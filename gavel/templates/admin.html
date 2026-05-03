@@ -9,9 +9,7 @@ html, body, #content {
   height: 100%;
 }
 </style>
-{% assets 'admin_js' %}
-<script type="text/javascript" src="{{ ASSET_URL }}"></script>
-{% endassets %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/admin/admin_live.js') }}"></script>
 {% endblock %}
 {% block content %}
 <div style="height: 100%">
