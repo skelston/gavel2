@@ -1,4 +1,3 @@
-from gavel import celery
 import gavel.settings as settings
 import gavel.crowd_bt as crowd_bt
 import gavel.constants as constants
@@ -17,25 +16,8 @@ import email
 import email.mime.multipart
 import email.mime.text
 import json
+import threading
 import types
-
-import asyncio
-
-loop = asyncio.new_event_loop()
-asyncio.set_event_loop(loop)
-
-def async_action(f):
-    @wraps(f)
-    def wrapped(*args, **kwargs):
-        return loop.run_until_complete(f(*args, **kwargs))
-    return wrapped
-
-
-def async_future(f):
-    @wraps(f)
-    def wrapped(*args, **kwargs):
-        return asyncio.Future(f(*args, **kwargs))
-    return wrapped
 
 
 sendgrid_url = "https://api.sendgrid.com/v3/mail/send"
@@ -83,12 +65,16 @@ def get_paragraphs(message):
     return paragraphs
 
 
-@celery.task(name='utils.send_emails')
+def send_emails_async(emails):
+    thread = threading.Thread(target=send_emails, args=(emails,), daemon=True)
+    thread.start()
+
+
 def send_emails(emails):
     if settings.EMAIL_PROVIDER not in ["smtp", "sendgrid", "mailgun"]:
         raise Exception("[EMAIL ERROR]: Invalid email provider. Please select one of: smtp, sendgrid, mailgun")
     if settings.EMAIL_PROVIDER == "smtp":
-        send_smtp_emails.apply_async(args=[emails])
+        send_smtp_emails(emails)
     else:
         exceptions = []
         for e in emails:
@@ -97,11 +83,10 @@ def send_emails(emails):
             to_adddress = to_address[0:]
             try:
                 if settings.EMAIL_PROVIDER == "sendgrid":
-                    response = loop.run_until_complete(sendgrid_send_email(to_address, subject, body))
+                    response = sendgrid_send_email(to_address, subject, body)
                 elif settings.EMAIL_PROVIDER == "mailgun":
-                    response = loop.run_until_complete(mailgun_send_email(to_adddress, subject, body))
+                    response = mailgun_send_email(to_adddress, subject, body)
                 if not (response.status_code == requests.codes.ok or response.status_code == requests.codes.accepted):
-                    # all_errors = [error_obj["message"] for error_obj in response.json()["errors"]]
                     error_msg = to_address
                     exceptions.append(error_msg)
 
@@ -110,7 +95,6 @@ def send_emails(emails):
         if exceptions:
             raise Exception("Error sending some emails. Please double-check your email authentication settings.", exceptions)
 
-@celery.task(name='utils.send_smtp_emails')
 def send_smtp_emails(emails):
     '''
     Send a batch of emails.
@@ -152,7 +136,7 @@ def send_smtp_emails(emails):
     if exceptions:
         raise Exception('Error sending some emails: %s' % exceptions)
 
-async def sendgrid_send_email(to_address, subject, body):
+def sendgrid_send_email(to_address, subject, body):
     new_dict = {}
     new_dict["personalizations"] = []
     new_dict["personalizations"].append({"to": [{"email": to_address}], "subject": subject})
@@ -171,7 +155,7 @@ async def sendgrid_send_email(to_address, subject, body):
         headers=headers)
     return response
 
-async def mailgun_send_email(to_address, subject, body):
+def mailgun_send_email(to_address, subject, body):
     api_url = "https://api.mailgun.net/v3/" + settings.MAILGUN_DOMAIN + "/messages"
     mailgun_key = settings.MAILGUN_API_KEY
     response = requests.post(

@@ -3,7 +3,6 @@ from gavel import socketio
 from gavel.models import *
 from gavel.schemas import *
 from gavel.constants import *
-from functools import wraps
 import gavel.settings as settings
 import gavel.utils as utils
 from flask import (
@@ -28,16 +27,6 @@ except ImportError:
   import urllib3
 import xlrd
 
-import asyncio
-
-loop = asyncio.new_event_loop()
-asyncio.set_event_loop(loop)
-
-def async_action(f):
-  @wraps(f)
-  def wrapped(*args, **kwargs):
-    return loop.run_until_complete(f(*args, **kwargs))
-  return wrapped
 
 
 ALLOWED_EXTENSIONS = {'csv', 'xlsx', 'xls'}
@@ -801,8 +790,7 @@ def annotator_detail(annotator_id):
 def annotator_link(annotator):
   return url_for('login', secret=annotator.secret, _external=True)
 
-@async_action
-async def email_invite_links(annotators):
+def email_invite_links(annotators):
   if settings.DISABLE_EMAIL or annotators is None:
     return
   if not isinstance(annotators, list):
@@ -815,4 +803,4 @@ async def email_invite_links(annotators):
     body = '\n\n'.join(utils.get_paragraphs(raw_body))
     emails.append((annotator.email, settings.EMAIL_SUBJECT, body))
 
-  utils.send_emails.apply_async(args=[emails])
+  utils.send_emails_async(emails)

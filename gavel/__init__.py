@@ -65,11 +65,6 @@ def inject_context():
       debug_state=settings.DEBUG,
     )
 
-from celery import Celery
-
-app.config['CELERY_BROKER_URL'] = settings.BROKER_URI
-celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
-celery.conf.update(app.config)
 
 from gavel.models import db, ma
 
